@@ -1,2 +1,2 @@
 # FullStackAngularJavaSpringBoot
-Learning to build full stack application with Angular and Java Spring Boot.
+Learning to build full stack applications with Angular and Java Spring Boot.
