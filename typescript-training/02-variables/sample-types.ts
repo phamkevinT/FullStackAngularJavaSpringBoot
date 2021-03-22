@@ -7,3 +7,6 @@ let lastName: string = "Kumar";
 console.log(found);
 console.log("The grade is " + grade);
 console.log("Hi " + firstName + " " + lastName);
+
+// Template string utilizing back tick (`)
+console.log(`Hi ${firstName} ${lastName}`);
