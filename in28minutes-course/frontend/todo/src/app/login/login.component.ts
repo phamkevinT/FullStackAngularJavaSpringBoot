@@ -13,7 +13,7 @@ export class LoginComponent implements OnInit {
   errorMessage = 'Invalid Credentials';
   invalidLogin = false;
 
-
+  
   constructor(private router: Router) { }
 
   ngOnInit(): void {
@@ -23,8 +23,8 @@ export class LoginComponent implements OnInit {
   handleLogin() {
 
     if (this.username === "admin" && this.password === "admin") {
-      // Redirect to Welcome Page
-      this.router.navigate(['welcome']);
+      // Redirect from Login to Welcome Page
+      this.router.navigate(['welcome', this.username]);
       this.invalidLogin = false;
     } else {
       this.invalidLogin = true;
