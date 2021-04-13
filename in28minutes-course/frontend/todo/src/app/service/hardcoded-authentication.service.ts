@@ -10,10 +10,20 @@ export class HardcodedAuthenticationService {
 
   // Method to authenticate username and password (hardcoded)
   authenticate(username, password) {
+
+    console.log(this.isUserLoggedIn);
+
     if (username === "admin" && password === "admin") {
+      sessionStorage.setItem('authenticatedUser', username);
       return true;
     }
     return false;
+  }
+
+
+  isUserLoggedIn() {
+    let user = sessionStorage.getItem('authenticatedUser');
+    return !(user === null);
   }
 
 }
