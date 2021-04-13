@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-// Make this component injectable inside the Login Component Constructor
+// This Service is used in Login, Logout, Menu components
 @Injectable({
   providedIn: 'root'
 })
@@ -13,6 +13,7 @@ export class HardcodedAuthenticationService {
 
     console.log(this.isUserLoggedIn);
 
+    // If credentials match, then add user to session storage
     if (username === "admin" && password === "admin") {
       sessionStorage.setItem('authenticatedUser', username);
       return true;
@@ -20,13 +21,13 @@ export class HardcodedAuthenticationService {
     return false;
   }
 
-
+  // Check if user is logged-in by checking session storage
   isUserLoggedIn() {
     let user = sessionStorage.getItem('authenticatedUser');
     return !(user === null);
   }
 
-
+  // Logs user out byt removing from session storage
   logout() {
     sessionStorage.removeItem('authenticatedUser');
   }
