@@ -11,9 +11,9 @@ export class LoginComponent implements OnInit {
 
   username = 'admin';
   password = '';
-  errorMessage = 'Invalid Credentials';
-  invalidLogin = false;
 
+  invalidLogin = false; // Used to determine if angular alert will pop up
+  errorMessage = 'Invalid Credentials';
 
   constructor(private router: Router,
     private hardcodedAuthenticationService: HardcodedAuthenticationService) { }
@@ -25,7 +25,6 @@ export class LoginComponent implements OnInit {
   handleLogin() {
 
     if (this.hardcodedAuthenticationService.authenticate(this.username, this.password)) {
-
       // Redirect from Login to Welcome Page
       this.router.navigate(['welcome', this.username]);
       this.invalidLogin = false;

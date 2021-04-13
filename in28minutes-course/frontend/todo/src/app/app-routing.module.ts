@@ -7,6 +7,8 @@ import { LogoutComponent } from './logout/logout.component';
 import { RouteGuardService } from './service/route-guard.service';
 import { WelcomeComponent } from './welcome/welcome.component';
 
+// Routes and their associated components 
+// Those with 'canActivate' require user to be signed-in to access
 const routes: Routes = [
   { path: '', component: LoginComponent },
   { path: 'login', component: LoginComponent },

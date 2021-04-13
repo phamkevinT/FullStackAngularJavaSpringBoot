@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot } from '@angular/router';
 import { HardcodedAuthenticationService } from './hardcoded-authentication.service';
 
+// Helps determine if a user is logged-in or not
 // Used in the app-routing.module.ts when defining routes
 @Injectable({
   providedIn: 'root'

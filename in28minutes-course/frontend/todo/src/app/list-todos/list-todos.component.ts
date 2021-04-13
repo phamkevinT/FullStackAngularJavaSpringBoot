@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 
+// Class that represent a Todo item
 export class Todo {
   constructor(
     public id: number,
@@ -17,6 +18,7 @@ export class Todo {
 
 export class ListTodosComponent implements OnInit {
 
+  // Instantiate Todo items
   todos = [
     new Todo(1, 'Learn to Dance', false, new Date()),
     new Todo(2, 'Become an expert at Angular', false, new Date()),
