@@ -30,7 +30,7 @@ export class WelcomeComponent implements OnInit {
   }
 
   getWelcomeMessageWithParameter() {
-    this.welcomeDataService.executeHelloWorldBeanServiceWithPathVariable(this.name).subscribe(
+    this.welcomeDataService.executeHelloWorldServiceWithPathVariable(this.name).subscribe(
       response => this.handleSuccessfulResponse(response),
       error => this.handleErrorReponse(error)
     );

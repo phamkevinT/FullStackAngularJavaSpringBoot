@@ -12,7 +12,7 @@ export class HardcodedAuthenticationService {
   authenticate(username, password) {
 
     // If credentials match, then add user to session storage
-    if (username === "admin" && password === "admin") {
+    if (username === "in28minutes" && password === "dummy") {
       sessionStorage.setItem('authenticatedUser', username);
       return true;
     }
