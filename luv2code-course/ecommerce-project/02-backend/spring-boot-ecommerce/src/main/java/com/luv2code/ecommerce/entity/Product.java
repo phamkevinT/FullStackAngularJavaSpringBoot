@@ -10,6 +10,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.CreationTimestamp;
+
 import lombok.Data;
 
 @Entity
@@ -44,9 +46,11 @@ public class Product {
 	private int unitsInStock;
 
 	@Column(name = "date_created")
+	@CreationTimestamp
 	private Date dateCreated;
 
 	@Column(name = "last_updated")
+	@CreationTimestamp
 	private Date lastUpdated;
 
 }
