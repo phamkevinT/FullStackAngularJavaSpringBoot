@@ -18,13 +18,15 @@ public class MyDataRestConfig implements RepositoryRestConfigurer {
 
 		// disable HTTP methods for Product: PUT, POST, DELETE
 		// Don't want outsiders to modify our products
-		config.getExposureConfiguration().forDomainType(Product.class)
+		config.getExposureConfiguration()
+				.forDomainType(Product.class)
 				.withItemExposure((metdata, httpMethods) -> httpMethods.disable(theUnsupportedActions))
 				.withCollectionExposure((metdata, httpMethods) -> httpMethods.disable(theUnsupportedActions));
 
 		// disable HTTP methods for ProductCategory: PUT, POST, DELETE 
 		// Don't want outsiders to modify our product categories
-		config.getExposureConfiguration().forDomainType(ProductCategory.class)
+		config.getExposureConfiguration()
+				.forDomainType(ProductCategory.class)
 				.withItemExposure((metdata, httpMethods) -> httpMethods.disable(theUnsupportedActions))
 				.withCollectionExposure((metdata, httpMethods) -> httpMethods.disable(theUnsupportedActions));
 
