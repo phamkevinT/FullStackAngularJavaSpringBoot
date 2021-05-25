@@ -6,13 +6,28 @@ import { ProductListComponent } from './components/product-list/product-list.com
 
 import { HttpClientModule } from '@angular/common/http';
 import { ProductService } from './services/product.service';
+import { Routes, RouterModule } from '@angular/router';
+import { ProductCategoryMenuComponent } from './components/product-category-menu/product-category-menu.component';
+
+// Define our various Routes
+const routes: Routes = [
+  {path: 'category/:id/:name', component: ProductListComponent},
+  {path: 'category', component: ProductListComponent},
+  {path: 'products', component: ProductListComponent},
+  // Empty path -> redirect to products
+  {path: '', redirectTo: '/products', pathMatch: 'full'}, 
+  // Generic Wild Card - Anything that didn't match above routes -> redirect to products
+  {path: '**', redirectTo: '/products', pathMatch: 'full'} 
+];
 
 @NgModule({
   declarations: [
     AppComponent,
-    ProductListComponent
+    ProductListComponent,
+    ProductCategoryMenuComponent
   ],
   imports: [
+    RouterModule.forRoot(routes),
     BrowserModule,
     HttpClientModule
   ],
