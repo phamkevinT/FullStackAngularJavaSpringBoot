@@ -14,10 +14,28 @@ export class ProductService {
 
   private categoryUrl = 'http://localhost:8080/api/product-category';
 
+
   constructor(private httpClient: HttpClient) // Inject the HttpClient
   {
 
   }
+
+  private getProducts(searchUrl: string): Observable<Product[]> {
+    return this.httpClient.get<GetResponseProducts>(searchUrl).pipe( // Use HttpClient to make GET request to baseUrl and pipe data being returned
+      map(response => response._embedded.products) // Map the data to our given data type 
+    );
+  }
+
+
+  // Search and display products based on user's keyword
+  searchProducts(theKeyword: string): Observable<Product[]> {
+
+    // Build URL based on keyword
+    const searchUrl = `${this.baseUrl}/search/findByNameContaining?name=${theKeyword}`;
+
+    return this.getProducts(searchUrl);
+  }
+
 
   // Maps the JSON data from Spring Data REST to Product array
   getProductList(theCategoryId: number): Observable<Product[]> { // Returns an Observable of Product array
@@ -25,10 +43,9 @@ export class ProductService {
     // Build URL based on category id
     const searchUrl = `${this.baseUrl}/search/findByCategoryId?id=${theCategoryId}`;
 
-    return this.httpClient.get<GetResponseProducts>(searchUrl).pipe( // Use HttpClient to make GET request to baseUrl and pipe data being returned
-      map(response => response._embedded.products) // Map the data to our given data type 
-    );
+    return this.getProducts(searchUrl);
   }
+
 
   // Maps the JSON data from Spring Data REST to ProductCategory array
   getProductCategories(): Observable<ProductCategory[]> {
