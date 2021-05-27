@@ -20,6 +20,15 @@ export class ProductService {
 
   }
 
+  getProduct(theProductId: number): Observable<Product> {
+
+    // Build the URL based on product id
+    const productUrl = `${this.baseUrl}/${theProductId}`;
+
+    return this.httpClient.get<Product>(productUrl);
+  }
+
+
   private getProducts(searchUrl: string): Observable<Product[]> {
     return this.httpClient.get<GetResponseProducts>(searchUrl).pipe( // Use HttpClient to make GET request to baseUrl and pipe data being returned
       map(response => response._embedded.products) // Map the data to our given data type 
