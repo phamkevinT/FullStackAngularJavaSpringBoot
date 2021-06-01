@@ -56,12 +56,34 @@ export class ProductService {
   }
 
 
+  getProductListPaginate(thePage: number,
+    thePageSize: number,
+    theCategoryId: number): Observable<GetResponseProducts> {
+
+    // Build URL based on category id, page and size
+    const searchUrl = `${this.baseUrl}/search/findByCategoryId?id=${theCategoryId}&page=${thePage}&size=${thePageSize}`;
+
+    return this.httpClient.get<GetResponseProducts>(searchUrl);
+  }
+
+
   // Maps the JSON data from Spring Data REST to ProductCategory array
   getProductCategories(): Observable<ProductCategory[]> {
 
     return this.httpClient.get<GetResponseProductCategory>(this.categoryUrl).pipe( // Use HttpClient to make GET request to baseUrl and pipe data being returned
       map(response => response._embedded.productCategory) // Map the data to our given data type 
     );
+  }
+
+
+  searchProductsPaginate(thePage: number,
+                        thePageSize: number,
+                        theKeyword: string): Observable<GetResponseProducts> {
+
+    // Build URL based on theKeyword, page, and page size
+    const searchUrl = `${this.baseUrl}/search/findByNameContaining?name=${theKeyword}&page=${thePage}&size=${thePageSize}`;
+
+    return this.httpClient.get<GetResponseProducts>(searchUrl);
   }
 
 }
@@ -71,6 +93,12 @@ export class ProductService {
 interface GetResponseProducts {
   _embedded: {
     products: Product[];
+  },
+  page: {
+    size: number,
+    totalElements: number,
+    totalPages: number,
+    number: number
   }
 }
 

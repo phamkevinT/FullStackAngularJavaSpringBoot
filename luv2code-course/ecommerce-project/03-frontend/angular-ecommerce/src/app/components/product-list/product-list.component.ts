@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { toJSDate } from '@ng-bootstrap/ng-bootstrap/datepicker/ngb-calendar';
 import { Product } from 'src/app/common/product';
 import { ProductService } from 'src/app/services/product.service';
 
@@ -11,9 +12,16 @@ import { ProductService } from 'src/app/services/product.service';
 export class ProductListComponent implements OnInit {
 
   products: Product[];
-  currentCategoryId: number;
-  currentCategoryName: string;
-  searchMode: boolean;
+  currentCategoryId: number = 1;
+  previousCategoryId: number = 1;
+  searchMode: boolean = false;
+
+  // Properties for pagination
+  thePageNumber: number = 1;
+  thePageSize: number = 5;
+  theTotalElements: number = 0;
+
+  previousKeyword: string = null;
 
 
   constructor(private productService: ProductService, private route: ActivatedRoute) { }
@@ -44,12 +52,20 @@ export class ProductListComponent implements OnInit {
     // Get the keyword that user has entered in search bar
     const theKeyword: string = this.route.snapshot.paramMap.get('keyword');
 
+    // If we havea different keyword than previously
+    // then set thePageNumber to 1
+    if(this.previousKeyword != theKeyword) {
+      this.thePageNumber = 1;
+    }
+
+    this.previousKeyword = theKeyword;
+    console.log(`keyword=${theKeyword}, thePageNumber=${this.thePageNumber}`);
+
+
     // Search for the product using the keyword
-    this.productService.searchProducts(theKeyword).subscribe(
-      data => {
-        this.products = data;
-      }
-    );
+    this.productService.searchProductsPaginate(this.thePageNumber -1,
+                                               this.thePageSize,
+                                               theKeyword).subscribe(this.processResult());
   }
 
 
@@ -61,22 +77,55 @@ export class ProductListComponent implements OnInit {
     if (hasCategoryId) {
       // Get the 'id' param string and convert string to a number using the "+" symbol
       this.currentCategoryId = +this.route.snapshot.paramMap.get('id');
-
-      // Get the "name" param string
-      this.currentCategoryName = this.route.snapshot.paramMap.get('name');
     }
     else {
       // Not category id available ... default to category id = 1, and name = book
       this.currentCategoryId = 1;
-      this.currentCategoryName = 'Books';
     }
 
+    //
+    // Check if we  have a different category than previous
+    // Note: Angular will reuse a component if it is currently being viewed
+
+    // If we have a different category id than previous
+    // then we reset thePageNumber back to 1
+    if (this.previousCategoryId != this.currentCategoryId) {
+      this.thePageNumber = 1;
+    }
+
+    this.previousCategoryId = this.currentCategoryId;
+    console.log(`currentCategoryId=${this.currentCategoryId}, thePageNumber=${this.thePageNumber}`);
+
+
     // Get the products for this given category id
-    this.productService.getProductList(this.currentCategoryId).subscribe(
-      data => {
-        this.products = data; // Assign results to the Product array
-      }
-    )
+    this.productService.getProductListPaginate(this.thePageNumber - 1, // Spring Data Rest page starts at 0
+      this.thePageSize,
+      this.currentCategoryId)
+      .subscribe(this.processResult());
   }
 
+
+  processResult() {
+    return data => {
+      this.products = data._embedded.products;
+      this.thePageNumber = data.page.number + 1;
+      this.thePageSize = data.page.size;
+      this.theTotalElements = data.page.totalElements;
+    };
+  }
+
+
+  updatePageSize(pageSize: number) {
+    this.thePageSize = pageSize;
+    this.thePageNumber = 1;
+    this.listProducts();
+  }
+
+
+
+
+
 }
+
+
+
