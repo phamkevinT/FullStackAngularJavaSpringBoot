@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { Country } from 'src/app/common/country';
+import { State } from 'src/app/common/state';
 import { Luv2ShopFormService } from 'src/app/services/luv2-shop-form.service';
 
 @Component({
@@ -16,6 +18,12 @@ export class CheckoutComponent implements OnInit {
 
   creditCardYears: number[] = [];
   creditCardMonths: number[] = [];
+
+  countries: Country[];
+
+  shippingAddressStates: State[] = [];
+  billingAddressStates: State[] = [];
+
 
   constructor(private formBuilder: FormBuilder, private luv2ShopFormService: Luv2ShopFormService) { }
 
@@ -74,12 +82,23 @@ export class CheckoutComponent implements OnInit {
       }
     );
 
+    // Populate countries
+    this.luv2ShopFormService.getCountries().subscribe(
+      data => {
+        console.log("Retrieved countries: " + JSON.stringify(data));
+        this.countries = data;
+      }
+    );
+
   }
 
 
   onSubmit() {
     console.log("Handling the form submission button");
     console.log(this.checkoutFormGroup.get('customer').value);
+    console.log("The email address is " + this.checkoutFormGroup.get('customer').value.email);
+    console.log("The shipping address country is " + this.checkoutFormGroup.get('shippingAddress').value.country.name);
+    console.log("The shipping address state is " + this.checkoutFormGroup.get('shippingAddress').value.state.name);
   }
 
 
@@ -88,9 +107,15 @@ export class CheckoutComponent implements OnInit {
     if (event.target.checked) {
       this.checkoutFormGroup.controls.billingAddress
         .setValue(this.checkoutFormGroup.controls.shippingAddress.value);
+
+        // Bug Fix for States - Copy over chosen state
+        this.billingAddressStates = this.shippingAddressStates;
     }
     else {
       this.checkoutFormGroup.controls.billingAddress.reset();
+
+      // Bug Fix for States - Reset the state option
+      this.billingAddressStates = [];
     }
   }
 
@@ -120,7 +145,29 @@ export class CheckoutComponent implements OnInit {
         this.creditCardMonths = data;
       }
     );
+  }
 
+  getStates(formGroupName: string) {
+    const formGroup = this.checkoutFormGroup.get(formGroupName);
+    const countryCode = formGroup.value.country.code;
+    const countryName = formGroup.value.country.name;
+
+    console.log(`${formGroupName} country code: ${countryCode}`);
+    console.log(`${formGroupName} country code: ${countryName}`);
+
+    this.luv2ShopFormService.getStates(countryCode).subscribe(
+      data => {
+        if (formGroupName === 'shippingAddress') {
+          this.shippingAddressStates = data;
+        }
+        else {
+          this.billingAddressStates = data;
+        }
+        
+        // Select first state as default
+        formGroup.get('state').setValue(data[0]);
+      }
+    );
 
   }
 }

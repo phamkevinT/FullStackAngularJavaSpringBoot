@@ -10,6 +10,8 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -30,8 +32,9 @@ public class Country {
 	@Column(name="name")
 	private String name;
 	
-	// TODO: Set up one-to-many with States
+	// Set up one-to-many with States
 	@OneToMany(mappedBy="country")
+	@JsonIgnore
 	private List<State> states;
 	
 }
