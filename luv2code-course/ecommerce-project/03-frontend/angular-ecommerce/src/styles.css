@@ -18,6 +18,7 @@ body{
     font-size:16px;
     line-height:1.625;
     color:#666;
+    
     -webkit-font-smoothing:antialiased;
     -moz-osx-font-smoothing:grayscale
 }
@@ -106,12 +107,14 @@ a,a:hover{
 
 .page-wrapper{
     overflow:hidden;
-    background:#e5e5e5;
+    /* background:#e5e5e5; */
+    background:rgb(187, 187, 187);
     padding-bottom:8vh
 }
 
 .page-container{
-    background:#e5e5e5;
+    /* background:#e5e5e5; */
+    background:rgb(187, 187, 187);
     padding-left:200px
 }
 
@@ -566,7 +569,7 @@ input.au-input.au-input-xl{
  */
 
 .form-area{
-    background:#e5e5e5;
+    /* background:#e5e5e5; */
     position:relative;
     margin-bottom:45px;
     padding:50px 20px;
@@ -576,7 +579,8 @@ input.au-input.au-input-xl{
     position:absolute;
     top:-26px;
     left:13px;
-    background:#e5e5e5;
+    /* background:#e5e5e5; */
+    background:rgb(187, 187, 187);
     padding:10px 20px;
     font-weight:500;
     z-index:23;
@@ -684,10 +688,10 @@ select{
 }
 table.table.table-bordered{
     border:1px solid #ccc;
-    background:#fff
+    background:#fff;
 }
 .table-bordered td,.table-bordered th{
-    border:1px solid #dee2e6
+    border-bottom: 1px solid rgb(185, 185, 185);
 }
 table.table.table-bordered th{
     BACKGROUND:#0da8e4;
